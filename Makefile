@@ -1,8 +1,8 @@
 CFLAGS=-Wall -g
 
+all:ex19
+
+ex19:object.o
+
 clean:
-	rm -f ex6
-
-
-all:
-	make ex1 ex3 ex4 ex5 ex6
+	rm -f ex19
