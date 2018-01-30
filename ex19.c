@@ -60,18 +60,18 @@ void *Room_move(void *self,Direction direction)
     printf("You go west,into:\n");
     next=room->west;
   }
-  else{
-    printf("不存在这个房间\n");
-    exit(1);
-  }
+  // else{
+  //   printf("不存在这个房间\n");
+  //   exit(1);
+  // }
 
   if(next){
     next->_(describe)(next);
   }
-  else{
-    printf("指针错误\n");
-    exit(1);
-  }
+  // else{
+  //   printf("指针错误\n");
+  //   exit(1);
+  // }
 
   return next;
 }
@@ -109,10 +109,10 @@ void *Map_move(void *self,Direction direction)
   if(next){
     map->location=next;
   }
-  else{
-    printf("赋值出错\n");
-    exit(1);
-  }
+  // else{
+  //   printf("赋值出错\n");
+  //   exit(1);
+  // }
 
   return next;
 }
@@ -137,6 +137,7 @@ int Map_init(void *self)
   Room *throne=NEW(Room,"The throne room");
   Room *arena=NEW(Room,"The arena,with the minotaur");
   Room *kitchen=NEW(Room,"Kitchen,you have the knife now");
+  Room *basement=NEW(Room,"Basement,you find many treasure");
 
   assert(hall!=NULL);
   assert(throne!=NULL);
@@ -154,6 +155,9 @@ int Map_init(void *self)
 
   arena->east=throne;
   kitchen->west=throne;
+
+  arena->north=basement;
+  basement->south=arena;
 
   // start the map and the character off in the hall
   map->start=hall;
@@ -173,14 +177,19 @@ int process_input(Map *game)    //根据用户输入执行不同的函数
   assert(game!=NULL);
   printf("\n>");
 
-  char ch=getchar();   //getchar读取用户输入的第一个字符，若出错会返回-1
-  getchar();    //eat ENTER
-
-  assert(ch=='n' || ch=='s' || ch=='e' || ch=='w' || ch=='a' || ch=='l');    //解决一开始输入fd等等的字符串后出现的各种bug
+  // char ch=getchar();   //getchar读取用户输入的第一个字符，若出错会返回-1
+  // getchar();    //eat ENTER
+  //assert(ch=='n' || ch=='s' || ch=='e' || ch=='w' || ch=='a' || ch=='l');    //解决一开始输入fd等等的字符串后出现的各种bug
+  char *ch;
+  scanf("%s",ch);
   int damage=rand()%4;      //rand()生成伪随机数
-  assert(damage>0);
+  //assert(damage>0);
 
-  switch(ch){
+  if(ch[1]){
+    printf("只能输入一个字母\n");
+  }
+
+  switch(ch[0]){
     case -1:
       printf("Giving up?You suck.\n");
       return 0;
@@ -219,7 +228,7 @@ int process_input(Map *game)    //根据用户输入执行不同的函数
       break;
 
     default:
-      printf("What?:%d\n",ch);
+      printf("What?:%s\n",ch);
   }
 
   return 1;
